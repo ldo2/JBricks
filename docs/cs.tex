@@ -1,0 +1,212 @@
+\ProvidesFile{cs.tex}[2003/09/03 Определение стиля методички]
+
+% Глобальные параметры
+\lccode`\-=`\-\defaulthyphenchar=127
+\usepackage[koi8-r]{inputenc}
+\usepackage[russian]{babel}
+\papersize{247.5mm}{175mm}
+\marginsize{18mm}{18mm}{16.66667mm}{16.66667mm}
+\sloppy
+\raggedbottom
+
+% Хотим иметь параграфы
+\renewcommand\sectionname{\S}
+
+% Наш стиль колонтитулов
+\makeatletter
+\def\@@evenhead{\hbox to \textwidth{\rm\thepage\hfil\em\leftmark\strut}}
+\def\@evenhead{\vtop to \headheight  {\@@evenhead\hrule\vss}}
+\def\@@oddhead{\hbox to\textwidth{{\em\rightmark}\hfil\rm\thepage\strut}}
+\def\@oddhead{\vtop to \headheight {\@@oddhead\hrule\vss}}
+\def\chaptermark#1{\markboth{Глава \thechapter.\hskip.5em\relax #1}{}}%
+ \def\sectionmark#1{\markright{\sectionname\arabic{section}.\hskip
+       .5em\relax #1}}%
+\makeatother
+
+% Библиография: обычный размер!
+\makeatletter
+\renewenvironment{thebibliography}[1]{%
+  \@xp\chapter\@xp*\@xp{\bibname}%
+  \normalfont\labelsep .5em\relax
+  \renewcommand\theenumiv{\arabic{enumiv}}\let\p@enumiv\@empty
+  \list{\@biblabel{\theenumiv}}{\settowidth\labelwidth{\@biblabel{#1}}%
+    \leftmargin\labelwidth \advance\leftmargin\labelsep
+    \usecounter{enumiv}}%
+  \sloppy \clubpenalty\@M \widowpenalty\clubpenalty
+  \sfcode`\.=\@m
+}
+\makeatother
+
+% Задаем стиль оформления оглавления
+\makeatletter
+\renewcommand{\l@chapter}{\@tocline{0}{6pt plus1pt}{0pt}{}{\bfseries}}
+\renewcommand{\l@section}{\@tocline{1}{4pt plus1pt}{12pt}{}{}}
+\renewcommand{\l@subsection}{\@tocline{2}{0pt plus1pt}{24pt}{}{\small}}
+\makeatother
+
+% В longtable хотим иметь точку вместо двоеточия
+\makeatletter
+\def\LT@makecaption#1#2#3{%
+  \LT@mcol\LT@cols c{\hbox to\z@{\hss\parbox[t]\LTcapwidth{%
+    \sbox\@tempboxa{#1{#2. }#3}%
+    \ifdim\wd\@tempboxa>\hsize
+      #1{#2. }#3%
+    \else
+      \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+    \fi
+    \endgraf\vskip\baselineskip}%
+  \hss}}}
+\makeatother
+
+% Задаем стиль оформления параграфов (section) и секций (sybsection)
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}%
+  \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
+  {\large\bf \centering}}
+\renewcommand{\p@subsection}{\thesection.}
+\renewcommand{\subsection}{\@startsection{subsection}{2}%
+  {0pt}{.5\linespacing\@plus.7\linespacing}{-.5em}%
+  {\normalfont\bfseries}}
+\makeatother
+
+% Новые команды и стиль окружений
+\newcommand\key[1]{\begingroup\fbox{\small\tt #1\vphantom{)}}\endgroup}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Определение}[section]
+%\newtheorem{problem}{}[section]
+% То же, что и предыдущее, но без нумерации
+\newtheorem{task}{Пример}[section]
+\newtheorem{problem}{Задание}
+
+\theoremstyle{plain}
+\newtheorem{prep}{Предложение}[section]
+\newtheorem{theorem}{Теорема}[section]
+\renewcommand{\proofname}{Доказательство}
+
+\theoremstyle{remark}
+\newtheorem*{solution}{Решение}
+\newtheorem*{algorithm}{Алгоритм решения задачи}
+\newtheorem*{programm}{Программа}
+
+% Указываем явно, что нумеруем и параграфы (section) и секции (subsection)
+\setcounter{secnumdepth}{2}
+% В оглавление секции (subsection) НЕ ВКЛЮЧАЕМ!!!
+\setcounter{tocdepth}{1}
+
+% 1 - имя исходного файла
+% 2 - количество строк в вырезке
+% 3 - последняя строка вырезки
+\newcommand{\slice}[3]{
+\openout10=slice/#1.sh
+\write10{head -#3 programms/#1 | tail -#2 > slice/#1.#2-#3}
+\closeout10
+\verbatiminput{slice/#1.#2-#3}
+}
+
+% Непосредственно вводимая задача
+\newcommand{\prb}[1]{
+\begin{problem}
+#1
+\end{problem}
+}
+
+% Задача, вводимая из файла (с автоматически генеримой ссылкой)
+\newcommand{\prbf}[1]{
+\begin{problem}\label{prb:#1}
+\input{problems/#1}
+\end{problem}
+}
+
+% Задача, вводимая из файла (с автоматически генеримой ссылкой)
+%         ДЛЯ ПАРАГРАФОВ С ЗАДАЧАМИ !!!
+\newcommand{\prbl}[1]{
+\begin{problem}\label{prbl:#1}
+\input{problems/#1}
+\end{problem}
+}
+
+% Задача, вводимая из файла (БЕЗ ссылки!!!)
+\newcommand{\prbn}[1]{
+\begin{problem}
+\input{problems/#1}
+\end{problem}
+}
+
+% Не нумеруемая задача, вводимая из файла
+% (с автоматически генеримой ссылкой)
+\newcommand{\prbs}[1]{
+\begin{task}\label{prbs:#1}
+\input{problems/#1}
+\end{task}
+}
+
+% Программа, вводимая из файла
+% (с автоматически генеримой ссылкой)
+\newcommand{\prgf}[1]{
+\medskip\noindent{\sc Текст программы.}\label{prg:#1}%
+\nobreak{\small\verbatiminput{programms/#1.java.expand}}
+}
+
+% Программа, вводимая из файла
+% (с автоматически генеримой ссылкой)
+\newcommand{\prgi}[3]{
+\medskip\noindent{\sc #1.}\label{#3}%
+\nobreak{\small\verbatiminput{#2.expand}}
+}
+
+% Программа, вводимая из файла
+% (с автоматически генеримой ссылкой)
+\newcommand{\prgti}[3]{
+\medskip\noindent{\sc #1.}\label{#3}%
+\nobreak{\tiny\verbatiminput{#2.expand}}
+}
+
+% Программа, вводимая из файла
+% (без ссылки !!!)
+\newcommand{\prgl}[1]{
+\medskip\noindent{\sc Текст программы.}
+\nobreak{\small\verbatiminput{programms/#1.java.expand}}
+}
+
+% Программа, вводимая из файла
+% (с автоматически генеримой ссылкой)
+\newcommand{\prgfs}[3]{
+\medskip\noindent{\sc Фрагмент программы ({\tt #1.java}).}%
+\nobreak{\small\slice{#1.java.expand}{#2}{#3}}\smallskip
+}
+
+% Пример программы, вводимой из файла
+% (с автоматически генеримой ссылкой)
+\newcommand{\example}[2]{
+\medskip\noindent{\sc Пример программы.}\label{#2}%
+\nobreak{\small\verbatiminput{#1.expand}}
+}
+
+% Для предикатов используем
+% \lnot, \lor, \land, \Rightarrow, =, \|, \&\&
+\newcommand{\limp}{\Rightarrow}
+\newcommand{\leqs}{=}
+\newcommand{\lors}{\|}
+\newcommand{\lands}{\&\&}
+% Для программ все стандартно:
+% {\tt !a, a|b, a\&b, a==b, a||b, a\&\&b}
+
+\def\Er{\hskip-4.5mm\raisebox{-1mm}{\hbox{\Huge$\times$}}}
+\def\ER{\hskip-5mm\raisebox{-1mm}{\hbox{\Huge$\times$}}}
+\def\ERR{\hskip-7.5mm\raisebox{-1mm}{\hbox{\Huge$\times$}}}
+
+\def\Cmd#1{\mbox{\tt "#1"}}
+\def\cmd#1{{\tt #1}}
+
+\newcommand{\hint}{{\sc Указание.\ }}
+
+\def\N{\mathbb{N}}
+\def\Z{\mathbb{Z}}
+\def\R{\mathbb{R}}
+\def\Q{\mathbb{Q}}
+
+\endinput
+
