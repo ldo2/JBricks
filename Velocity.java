@@ -1,8 +1,10 @@
-class Velocity {
+import java.io.Serializable;
+
+class Velocity implements Serializable{
   /*
-   * @_dx - УПУФПЧМСАЭБС УЛПТПУФЙ РП ПУЙ и
-   * @_dy - УПУФПЧМСАЭБС УЛПТПУФЙ РП ПУЙ Y
-   * @_speed - УЛПТПУФШ УРТБКФБ
+   * @_dx - состовляющая скорости по оси Х
+   * @_dy - состовляющая скорости по оси Y
+   * @_speed - скорость спрайта
    */
 
   private double _dx, _dy;
@@ -11,6 +13,10 @@ class Velocity {
   public Velocity(int D, int S) {
     _speed = S;
     setDirection(D);
+  }
+
+  public Velocity(Velocity v) {
+    this(v.getDirection(), v.getSpeed());
   }
 
   public int getSpeed() {
@@ -34,17 +40,21 @@ class Velocity {
     return ((int) Math.toDegrees(Math.atan2(_dy,_dx)))%360;
   }
 
-  /* ЙОЧЕТФЙТПЧБФШ ОБРТБЧМЕОЙЕ ДЧЙЦЕОЙС */
+  /* инвертировать направление движения */
   public void reverse() {
     _dx = -_dx;
     _dy = -_dy;
   }
-  /* ЙОЧЕТФЙТПЧБФШ ОБРТБЧМЕОЙЕ РП ПУЙ и*/
+  /* инвертировать направление по оси Х*/
   public void reverseX() {
     _dx = -_dx;
   }
-  /* ЙОЧЕТФЙТПЧБФШ ОБРТБЧМЕОЙЕ РП ПУЙ Y*/
+  /* инвертировать направление по оси Y*/
   public void reverseY() {
     _dy = -_dy;
+  }
+  
+  public boolean equals(Velocity vel){
+    return (_speed == vel.getSpeed() && this.getDirection() == vel.getDirection());
   }
 }

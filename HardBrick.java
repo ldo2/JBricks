@@ -3,12 +3,12 @@ import java.awt.Rectangle;
 
 class HardBrick extends Brick {
   /*
-   * @_hitCount - ËÏÌÉÞÅÓÔ×Ï ÄÏÐÕÓÔÉÍÙÈ ÕÄÁÒÏ× ÛÁÊÂÏÊ
-   *              ËÉÒÐÉÞ ÒÁÚÒÕÛÁÅÔÓÑ, ËÁË ÔÏÌØËÏ ÁÔÒÉÂÕÔ
-   * 			  ÂÕÄÅÔ ÒÁ×ÅÎ ÎÕÌÀ
-   * @_woundImg - ÉÚÏÂÒÁÖÅÎÉÅ ÐÏ×ÒÅÖÄÅÎÏÇÏ ËÉÒÐÉÞÁ
-   * 			  ÚÁÍÅÎÑÅÔ ÉÓÈÏÄÎÏÅ ÉÚÏÂÒÁÖÅÎÉÅ ÐÒÉ ÐÅÒ×ÏÍ
-   * 			  ÕÄÁÒÅ ÛÁÊÂÙ
+   * @_hitCount - êîëè÷åñòâî äîïóñòèìûõ óäàðîâ øàéáîé
+   *              êèðïè÷ ðàçðóøàåòñÿ, êàê òîëüêî àòðèáóò
+   * 			  áóäåò ðàâåí íóëþ
+   * @_woundImg - èçîáðàæåíèå ïîâðåæäåíîãî êèðïè÷à
+   * 			  çàìåíÿåò èñõîäíîå èçîáðàæåíèå ïðè ïåðâîì
+   * 			  óäàðå øàéáû
    */
   private int _hitCount = 1;
   private Image _woundImg;
@@ -22,9 +22,9 @@ class HardBrick extends Brick {
     super(pf, bp, img, p);
     _woundImg = woundImg;
   }
-  /* OÂÒÁÂÏÔËÁ ÓÏÕÄÁÒÅÎÉÑ Ó ÛÁÊÂÏÊ. ëÁË ÔÏÌØËÏ
-   * ÚÎÁÞÅÎÉÅ _hitCount ÓÔÁÎÏ×ÉÔÓÑ ÒÁ×ÎÙÍ ÎÕÌÀ
-   * É ÂÕÄÅÔ ÕÄÁÌÅÎ Ó ÉÇÒÏ×ÏÇÏ ÐÏÌÑ
+  /* Oáðàáîòêà ñîóäàðåíèÿ ñ øàéáîé. Êàê òîëüêî
+   * çíà÷åíèå _hitCount ñòàíîâèòñÿ ðàâíûì íóëþ
+   * è áóäåò óäàëåí ñ èãðîâîãî ïîëÿ
    */
   public void hitBy(Puck p) {
     if (_hitCount > 0) {
@@ -36,6 +36,6 @@ class HardBrick extends Brick {
         _pf.getMatch().win();
       }
     }
-    p.getVelocity().reverseY();
+    reflectPuck(p);
   }
 }

@@ -1,9 +1,10 @@
 import java.awt.Image;
-/* èÒÁÎÉÌÉÝÅ ÓÐÒÁÊÔÏ× */
-class PuckSupply {
+import java.io.Serializable;
+/* Õðàíèëèùå ñïðàéòîâ */
+class PuckSupply implements Serializable{
   /*
-   * @_puck - ÍÁÓÓÉ× ÛÁÊÂ
-   * @_count - ËÏÌ-×Ï ÏÓÔÁ×ÛÉÈÓÑ ÛÁÊÂ
+   * @_puck - ìàññèâ øàéá
+   * @_count - êîë-âî îñòàâøèõñÿ øàéá
    */
   private Puck _pucks[];
   private int _count;
@@ -18,8 +19,19 @@ class PuckSupply {
   public int size() {
     return _count;
   }
-  /* ÷ÚÑÔØ ÓÌÅÄÕÀÝÕÀ ÛÁÊÂÕ ÉÚ ÈÒÁÎÉÌÉÝÁ */
+  /* Âçÿòü ñëåäóþùóþ øàéáó èç õðàíèëèùà */
   public Puck get() {
     return _count > 0 ? _pucks[--_count] : null;
+  }
+  public Puck lastPuck(){
+    return _pucks[_count];
+  }
+  public void setImage(Image img){
+    for (int i = 0; i < _pucks.length; i++)
+      _pucks[i].setImage(img);
+  }
+  public void setPlayField(PlayField pf){
+    for (int i = 0; i < _pucks.length; i++)
+      _pucks[i].setPlayField(pf);
   }
 }

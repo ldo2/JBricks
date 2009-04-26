@@ -3,12 +3,12 @@
  **/
 import java.awt.Image;
 import java.awt.Rectangle;
-/* рПДЧЙЦОК УРТБКФ */
+/* Подвижнй спрайт */
 abstract class MovableSprite extends Sprite {
   /*
-   * @_v - ОБРТБЧМЕОЙЕ Й УЛПТПУФШ 
-   * @_isMoving - УПУФПСОЙЕ: "ДЧЙЗБЕФУС", "ОЕДЧЙЗБЕФУС" 
-   * @_prevPos - НЕУФПРПМПЦЕОЙЕ УРТБКФБ ДП РЕТЕДЧЙЦЕОЙС
+   * @_v - направление и скорость 
+   * @_isMoving - состояние: "двигается", "недвигается" 
+   * @_prevPos - местоположение спрайта до передвижения
    */
   protected Velocity _v;
   protected boolean _isMoving = false;
@@ -30,7 +30,12 @@ abstract class MovableSprite extends Sprite {
   public Velocity getVelocity() {
     return _v;
   }
-  /* чЕТОХФШ УРТБКФ У ЛПФПТЩН РТПЙЪПЫМП УПХДБТЕОЙЕ */
+  
+  public void setVelocity(Velocity v) {
+    _v = v;
+  }
+  
+  /* Вернуть спрайт с которым произошло соударение */
   public Sprite collideWith() {
     return _pf.testCollision(this);	
   }
@@ -47,5 +52,9 @@ abstract class MovableSprite extends Sprite {
 
   public void stopMoving() {
     _isMoving = false;
+  }
+  
+  public boolean isMoving(){
+    return _isMoving;
   }
 }

@@ -1,15 +1,15 @@
 import java.awt.Graphics;
 import java.util.Vector;
-/* Множетсво всех спрайтов находящихся на игровом поле.
- * Выделен в отдельный класс для "разгрузки" 
- * игрового поля.
+/* лМНФЕРЯБН БЯЕУ ЯОПЮИРНБ МЮУНДЪЫХУЯЪ МЮ ХЦПНБНЛ ОНКЕ.
+ * бШДЕКЕМ Б НРДЕКЭМШИ ЙКЮЯЯ ДКЪ "ПЮГЦПСГЙХ" 
+ * ХЦПНБНЦН ОНКЪ.
  */
 class SpriteVector extends Vector {
   public void draw(Graphics g) {
     for (int i = 0; i < size(); i++)
        ((Sprite) elementAt(i)).draw(g);
   }
-  /* Проверка коллизии */
+  /* оПНБЕПЙЮ ЙНККХГХХ */
   public Sprite testCollision(Sprite test) {
     for (int i = 0; i < size(); i++) {
       Sprite s = (Sprite) elementAt(i);
@@ -20,7 +20,7 @@ class SpriteVector extends Vector {
     }
     return null;
   }
-  /* Обновить состояние всех спрайтов */ 
+  /* нАМНБХРЭ ЯНЯРНЪМХЕ БЯЕУ ЯОПЮИРНБ */ 
   public void update() {
     for (int i = 0; i < size(); i++) {
       Sprite s = (Sprite) elementAt(i);

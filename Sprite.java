@@ -1,18 +1,19 @@
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
-abstract class Sprite {
+abstract class Sprite implements Serializable{
   /* 
-   * @_img - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
-   * @_pf  - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
-   * @_pos - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
-   * @_isDead - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - "пїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅ"
-   * пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 
+   * @_img - изображение спрайта
+   * @_pf  - игровое поле
+   * @_pos - позиция и размеры спрайта
+   * @_isDead - состояние - "мертв", "жив"
+   * Мертвый спрайт удаляется с игрового поля. 
    */
 
-  protected Image _img;
-  protected PlayField _pf;
+  protected transient Image _img;
+  protected transient PlayField _pf;
   protected Rectangle _pos;
   protected boolean _isDead;
 
@@ -21,26 +22,35 @@ abstract class Sprite {
     _img = img;
     _pf = pf;
   }
-
+  
   public void draw(Graphics g) {
     g.drawImage(_img, _pos.x, _pos.y, _pf);
   }
-  /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. */
+  /* Проверка на наличие коллизии. */
   public boolean testCollision(Sprite s) {
     if (s != this)
       return _pos.intersects(s.getBounds());
     return false;
   }
-  /* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. */
+  /* Взять ограничивающий прямоугольник спрайта. */
   public Rectangle getBounds() {
     return _pos;
   }
-  /* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ. */
+  /* Мертв или жив? */
   public boolean isDead() {
     return _isDead;
   }
-  /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. */
+  
+  /* Обновить. */
   abstract public void update();
-  /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. */
+  /* Проверка столконовения с шайбой. */
   abstract public void hitBy(Puck p);
+    
+  public void setImage(Image img){
+    _img = img;
+  }
+  
+  public void setPlayField(PlayField pf){
+    _pf=pf;
+  }
 }
